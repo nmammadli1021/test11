@@ -38,7 +38,7 @@ public class SecurityConfiguration {
         return http.build();
 }
     @Bean
-    public UserDetailsService userDetailsService() {
+    public UserDetailsService userDetailsServicess() {
         UserDetails user =
                 User.withDefaultPasswordEncoder()
                         .username("user")
