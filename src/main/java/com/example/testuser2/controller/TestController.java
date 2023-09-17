@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/v1/users")
 public class TestController {
-    @PreAuthorize("")
     @GetMapping("/get")
     public String test(){
         return "aoaoa";

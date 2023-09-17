@@ -7,6 +7,10 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -23,9 +27,9 @@ public class SecurityConfiguration {
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                                auth.requestMatchers("/v1/auth/users/get").permitAll()
-//                                        .requestMatchers("/v1/user").hasRole("USER")
-//                                        .requestMatchers("/v1/admin").hasRole("ADMIN")
+                                auth.requestMatchers("/v1/auth/**").permitAll()
+                                        .requestMatchers("/v1/user").hasRole("USER")
+                                        .requestMatchers("/v1/admin").hasRole("ADMIN")
                                         .requestMatchers(permitSwagger).permitAll()
                                         .anyRequest().authenticated());
                 http.authenticationProvider(authenticationProvider);
@@ -33,6 +37,17 @@ public class SecurityConfiguration {
 
         return http.build();
 }
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails user =
+                User.withDefaultPasswordEncoder()
+                        .username("user")
+                        .password("password")
+                        .roles("USER")
+                        .build();
+
+        return new InMemoryUserDetailsManager(user);
+    }
     public static String[] permitSwagger = {
             "/api/v1/auth/**",
             "v3/api-docs/**",
