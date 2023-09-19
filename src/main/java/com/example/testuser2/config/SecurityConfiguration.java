@@ -28,8 +28,8 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                                 auth.requestMatchers("/v1/auth/**").permitAll()
-                                        .requestMatchers("/v1/user").hasRole("USER")
-                                        .requestMatchers("/v1/admin").hasRole("ADMIN")
+//                                        .requestMatchers("/v1/user").hasRole("USER")
+//                                        .requestMatchers("/v1/admin").hasRole("ADMIN")
                                         .requestMatchers(permitSwagger).permitAll()
                                         .anyRequest().authenticated());
                 http.authenticationProvider(authenticationProvider);
