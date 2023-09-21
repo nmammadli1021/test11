@@ -9,4 +9,5 @@ import lombok.*;
 public class AuthenticationDto {
 
     private String token;
+    private String message;
 }

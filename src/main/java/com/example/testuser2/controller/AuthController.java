@@ -37,14 +37,14 @@ public class AuthController {
 
         if (loginAttemptService.isAccountLocked(email)) {
             return ResponseEntity.status(HttpStatus.LOCKED)
-                    .body(new AuthenticationDto("Your account has been blocked. Please try again later."));
+                    .body(new AuthenticationDto(null,"Your account has been blocked. Please try again later."));
         }
 
 
         if (!loginAttemptService.loginFailed(email)) {
 
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new AuthenticationDto("Incorrect username or password."));
+                    .body(new AuthenticationDto(null,"Incorrect username or password."));
 
         } else {
             return ResponseEntity.ok(authService.authenticate(authRequestDto));
