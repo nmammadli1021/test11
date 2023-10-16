@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @Entity
@@ -23,13 +24,10 @@ public class UserEntity implements UserDetails {
 
     @Column(name = "full_name", length = 64)
     private String fullName;
-
-
     private String email;
-
-
     private String password;
-
+    @OneToMany(mappedBy = "user")
+    private List<IpHistoryEntity> ipHistory;
 
 
     @Override

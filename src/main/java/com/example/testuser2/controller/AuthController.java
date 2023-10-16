@@ -6,7 +6,10 @@ import com.example.testuser2.dao.entity.UserEntity;
 import com.example.testuser2.dto.AuthRequestDto;
 import com.example.testuser2.dto.AuthenticationDto;
 import com.example.testuser2.dto.UserRegisterRequestDto;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +34,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationDto> login(
-            @RequestBody AuthRequestDto authRequestDto) {
-
+            @RequestBody AuthRequestDto authRequestDto, @RequestBody HttpServletRequest request) {
+        String userIpAddress = getClientIP(request);
         String email = authRequestDto.getEmail();
 
         if (loginAttemptService.isAccountLocked(email)) {
@@ -49,5 +52,13 @@ public class AuthController {
         } else {
             return ResponseEntity.ok(authService.authenticate(authRequestDto));
         }
+
+    }
+    private String getClientIP(HttpServletRequest request) {
+        String ipAddress = request.getHeader("X-FORWARDED-FOR");
+        if (ipAddress == null) {
+            ipAddress = request.getRemoteAddr();
+        }
+        return ipAddress;
     }
 }
