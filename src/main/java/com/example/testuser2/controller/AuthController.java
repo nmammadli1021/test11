@@ -12,10 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/auth")
@@ -34,8 +31,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationDto> login(
-            @RequestBody AuthRequestDto authRequestDto, @RequestBody HttpServletRequest request) {
-        String userIpAddress = getClientIP(request);
+            @RequestBody AuthRequestDto authRequestDto, @RequestHeader HttpServletRequest request) {
+        String userIp=getClientIP(request);
         String email = authRequestDto.getEmail();
 
         if (loginAttemptService.isAccountLocked(email)) {
@@ -61,4 +58,5 @@ public class AuthController {
         }
         return ipAddress;
     }
+
 }
